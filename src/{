@@ -1,7 +1,5 @@
-#![cfg_attr(not(feature = "use_std"), no_std)]
-
-use core::fmt::{Debug, Display, Error, Formatter};
 use core::ops::{Add, Div, Mul, Rem, Sub};
+use core::fmt::Display;
 
 #[derive(Clone, Copy, Hash, PartialEq, Eq)]
 pub struct Complex<T> {
@@ -13,14 +11,12 @@ pub trait Sqrt {
     fn sqrt(&self) -> Self;
 }
 
-#[cfg(feature = "use_std")]
 impl Sqrt for f32 {
     fn sqrt(&self) -> Self {
         f32::sqrt(*self)
     }
 }
 
-#[cfg(feature = "use_std")]
 impl Sqrt for f64 {
     fn sqrt(&self) -> Self {
         f64::sqrt(*self)
@@ -108,69 +104,14 @@ impl<
     }
 }
 
-impl<T: Default> Default for Complex<T> {
-    fn default() -> Self {
-        Self::new(Default::default(), Default::default())
-    }
-}
-
-impl<T: Default> From<T> for Complex<T> {
-    fn from(num: T) -> Self {
-        Self::new(num, Default::default())
-    }
-}
-
 impl<T: Display> Display for Complex<T> {
-    fn fmt(&self, formatter: &mut Formatter) -> Result<(), Error> {
-        write!(formatter, "{} + {}*i", self.real, self.imag)
-    }
-}
-
-impl<T: Display> Debug for Complex<T> {
-    fn fmt(&self, formatter: &mut Formatter) -> Result<(), Error> {
-        write!(formatter, "{} + {}*i", self.real, self.imag)
-    }
+    fn display(&self) {}
 }
 
 #[cfg(test)]
 mod tests {
-    use crate::Complex;
     #[test]
-    fn add() {
-        let c1 = Complex::new(13, 123);
-        let c2 = Complex::new(576, 362);
-
-        assert_eq!(c1 + c2, Complex::new(13 + 576, 123 + 362));
-    }
-
-    #[test]
-    fn sub() {
-        let c1 = Complex::new(13, 123);
-        let c2 = Complex::new(576, 362);
-
-        assert_eq!(c1 - c2, Complex::new(13 - 576, 123 - 362));
-    }
-
-    #[test]
-    fn mul() {
-        let c1 = Complex::new(13, 123);
-        let c2 = Complex::new(576, 362);
-
-        assert_eq!(
-            c1 * c2,
-            Complex::new(13 * 576 - 123 * 362, 13 * 362 + 576 * 123)
-        );
-    }
-
-    #[test]
-    fn div() {
-        let c1 = Complex::new(13_i64, 123);
-        let c2 = Complex::new(576, 362);
-
-        let num = c1 * Complex::new(576, -362);
-        let denom = 576 * 576 + 362 * 362;
-        let res = num / Complex::from(denom);
-
-        assert_eq!(c1 / c2, res);
+    fn it_works() {
+        assert_eq!(2 + 2, 4);
     }
 }
