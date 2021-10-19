@@ -1,7 +1,10 @@
-#![cfg_attr(not(feature = "use_std"), no_std)]
+#![no_std]
 
 use core::fmt::{Debug, Display, Error, Formatter};
 use core::ops::{Add, Div, Mul, Rem, Sub};
+
+mod sqrt;
+mod utils;
 
 #[derive(Clone, Copy, Hash, PartialEq, Eq)]
 pub struct Complex<T> {
@@ -13,17 +16,15 @@ pub trait Sqrt {
     fn sqrt(&self) -> Self;
 }
 
-#[cfg(feature = "use_std")]
 impl Sqrt for f32 {
     fn sqrt(&self) -> Self {
-        f32::sqrt(*self)
+        sqrt::sqrt_f32(*self)
     }
 }
 
-#[cfg(feature = "use_std")]
 impl Sqrt for f64 {
     fn sqrt(&self) -> Self {
-        f64::sqrt(*self)
+        sqrt::sqrt_f64(*self)
     }
 }
 
